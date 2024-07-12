@@ -32,3 +32,19 @@ export const postPopularToken = asyncHandler(async(req,res)=>{
       }
 })
 
+export const findToken = asyncHandler(async(req,res)=>{
+    try{
+    const { chainId, symbol } = req.query;
+    if (!chainId || !symbol) {
+      return res.status(400).send({ error: 'chainId and symbol query parameters are required' });
+    }
+    const token = await Token.findOne({ chainId, symbol });
+
+    if (!token) {
+      return res.status(404).send({ error: 'Token not found' });
+    }
+    res.status(200).send(token);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+})
