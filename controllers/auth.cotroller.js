@@ -1,8 +1,8 @@
-import Auth from '../models/auth.model.js';
+import asyncHandler from "express-async-handler"
 import jwt from 'jsonwebtoken';
 
 
-export const signin = async (req, res) => {
+export const signin =asyncHandler(async (req, res) => {
     const {userAddress } = req.body;
     console.log("req.body", req.body)
     if (!userAddress) {
@@ -20,6 +20,9 @@ export const signin = async (req, res) => {
     } catch (e) {
       console.log("error in signin", e)
     }
-  };
+  })
+
+
+
 
   
