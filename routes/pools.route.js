@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { getPools, postPools } from "../controllers/pool.controller.js";
+import { getAllPools, postPools } from "../controllers/pool.controller.js";
 
 const routerPools = Router();
 
-routerPools.post("/addPools", postPools);
-routerPools.get("/getPools", getPools);
+routerPools.post("/pool/addPools", postPools);
+routerPools.get("/pool/getPools", getAllPools);
 
 
 export { routerPools };
