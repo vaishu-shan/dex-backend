@@ -74,4 +74,54 @@ export const getAllPools = asyncHandler(async (req, res) => {
       } catch (error) {
         res.status(400).json({ message: error.message });
       }
+});
+
+export const postPoolTx = asyncHandler(async (req, res) => {
+    try {
+        const newPoolTx = new Pool(req.body);
+        const savedPoolTx = await newPoolTx.save();
+        res.status(201).json(savedPoolTx);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+
+});
+
+
+export const getPoolsTx = asyncHandler(async(req,res)=>{
+    const {
+        chainId,
+        orderby,
+        sort = 'asc',
+        poolContractAddress,
+        userAddress
+      } = req.query;
+    
+      // Create filter object
+      let filter = {};
+    
+      if (chainId) {
+        filter.chainId = chainId;
+      }
+    
+      if (poolContractAddress) {
+        filter.address = new RegExp(poolContractAddress, 'i');
+      }
+    
+      if (userAddress) {
+        filter.address = userAddress;
+      }
+    
+      // Create sort object
+      let sortOptions = {};
+      if (orderby && ['liquidity', 'volume', 'fees', 'apr'].includes(orderby)) {
+        sortOptions[orderby] = sort === 'asc' ? 1 : -1;
+      }
+    
+      try {
+        const pools = await Pool.find(filter).sort(sortOptions);
+        res.status(200).json(pools);
+      } catch (error) {
+        res.status(400).json({ message: error.message });
+      }
 })
